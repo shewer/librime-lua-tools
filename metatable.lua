@@ -1,8 +1,4 @@
 -- create metatable 
-function test()
-	return 2
-
-end 
 orgtype=type
 
 function type(obj)
