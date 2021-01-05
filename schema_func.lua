@@ -5,6 +5,7 @@
 --
 -- Distributed under terms of the MIT license.
 --
+require 'tools/metatable'
 
 
 local function getdata(config,key,datatype )
@@ -24,7 +25,7 @@ end
 local function get_list(config,key,datatype)
 	datatype = datatype or "string"
 	if not config:is_list(key) then return nil end 
-	local tlocal ab=metatable()
+	local tab=metatable()
 	local list_size=config:get_list_size( key  )
 	local tab=metatable()
 	for i=0,(list_size -1) , 1 do
