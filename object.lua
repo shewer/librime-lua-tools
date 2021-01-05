@@ -131,6 +131,12 @@ end
 function Object:__id()
 	return tostring(self)
 end 
+function Object:methods()
+	local tab= setmetatable({} , {__index=table})
+	for k,v in pairs( self:class() ) do
+		if (type(v) == "function" and k:match("^%l[%w_]*")) then tab:isert(k) end 
+	end 
+end 
 function Object:to_s()
 	--return tostring(self)
 
@@ -157,4 +163,4 @@ function Class:_initialize(name,extend)
 	return true
 end 
 
-setmetatable(Object,{__index=nil,__name="Object"} )
+return setmetatable(Object,{__index=nil,__name="Object"} )
