@@ -83,7 +83,7 @@ table.map=function(tab,func)
 	local newtab=setmetatable({} , {__index=table}) 
 	func= func or function(v,i) return v,i end 
 	for i,v in ipairs(tab) do
-		newtab[i]= func(v)
+		newtab[i]= func(v,i)
 	end 
 	return newtab
 end 
@@ -95,6 +95,20 @@ table.map_hash=function(tab,func) --  table to   list of array  { key, v}
 	end 
 	return newtab
 end 
+function table:push(elm)
+	self:insert(elm)
+end
+table.append = table.push 
+function table:pop()
+	return self:remove(#self)
+end
+function table:shift()
+	self:remove(1)
+end
+function table:unshift(elm)
+	self:insert(1,elm)
+end
+
 
 
 
