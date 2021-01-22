@@ -34,6 +34,8 @@ local function get_list(config,key,datatype)
 	return tab
 
 end
+
+
 local function get_data(config,key,datatype,datatype1) 
 		if datatype== "list" then 
 			return get_list(config,key,datatype1)
@@ -61,22 +63,37 @@ local function setdata(config,key,data , datatype )
 	end 
 end 
 local function set_list(config,key,datas,datatype)
-	for i=0,(#datas -1) , 1 do
+	for i,data in next,datas  do
 		datatype = datatype or "string"
-		setdata( config, key .. "/@" .. i, data ,datatype ) 
+		setdata( config, key .. "/@" .. i-1, data ,datatype ) 
 	end 
 end
 
 local function set_data(config,key,datas,datatype ) 
 	   	
 		log.info( "-------".. __FUNC__() .. debug.getinfo(2,"fuSln").name .. type(datas)  ) 
-		if datas == "table"  then 
+		if type(datas) == "table"  then 
 			set_list(config,key,datas,datatype)
 		else 
 			setdata(config,key,datas, datatype)
 		end
 end
+--     
+local function load_user_data(config,path,data_table)
+	path = path and path .. "/"  or "" 
+	local tab=metatable({path=path })
 
+	for k,v in pairs(data_table) do 
+		-- clone data_table
+		tab[k]= get_data(config, path ..  v.name , v.type1,v.type2 ) 
+	end 
+	return tab 
+end 
 
-
-return {get_data=get_data , get_list=get_list,set_data=set_data,set_list=set_list  } 
+return { 
+	get_data=get_data , 
+	get_list=get_list,
+	set_data=set_data,
+	set_list=set_list,
+	load_user_data=load_user_data,  
+} 
