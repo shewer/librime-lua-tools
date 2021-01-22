@@ -36,16 +36,12 @@ local function get_list(config,key,datatype)
 end
 
 
-local function get_data(config,key,datatype,datatype1) 
-		if datatype== "list" then 
-			return get_list(config,key,datatype1)
+local function get_data(config,key,datatype,list) 
+		if list then 
+			return get_list(config,key,datatype)
 		else 
 			return getdata(config,key,datatype)
 		end
-end 
-local function set_data(config,key,datatype,datatype1)
-
-
 end 
 
 local function setdata(config,key,data , datatype )
@@ -85,7 +81,7 @@ local function load_user_data(config,path,data_table)
 
 	for k,v in pairs(data_table) do 
 		-- clone data_table
-		tab[k]= get_data(config, path ..  v.name , v.type1,v.type2 ) 
+		tab[k]= get_data(config, path ..  v.name , v.type,v.list ) 
 	end 
 	return tab 
 end 
@@ -97,3 +93,29 @@ return {
 	set_list=set_list,
 	load_user_data=load_user_data,  
 } 
+
+--[[
+  get_data(config,path,data,datatype,list_f)   list_f == true/false nil 
+  get_list(config,path,list_data, datatype)
+  set_data(config,path,data,datatype)
+  set_list(config,path,list_data, datatype)  -- data : table 
+  load_user_data(config, tab)
+
+  get_data(config,"engine/translators","string",true )    -- get list of string
+  get_data(config,"translator,"dictiona", "string" )      -- get  string
+  set_data(config,"translator/test", 4 , "int")
+  set_data(config,"trr" , {3,4,65,6,6}, "int")
+
+  get_list(config,"engine/translators","string")
+  set_list(config,"engine/translators",{"lua_translator","table_translator"} ,"string")
+
+
+ load_user_data(config, user_data_table)  
+
+ {
+
+
+--
+--]]
+
+
