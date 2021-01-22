@@ -16,13 +16,12 @@ Notifier=Class("Notifier")
 
 function Notifier:_initialize(env)
 	self._env=env
-	self._ctx=env.engine.context
-	self.list=metatable()
+	self._list=metatable()
 	return self
 
 end
 function Notifier:_connect(name,func)
-	local connection= self._cix[name]:connect(func)
+	local connection= self._env.engine.context[name]:connect(func)
 	self._list:insert(connection)
 	return  connection
 end 

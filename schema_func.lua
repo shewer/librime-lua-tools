@@ -76,12 +76,12 @@ local function set_data(config,key,datas,datatype )
 end
 --     
 local function load_user_data(config,path,data_table)
-	path = path and path .. "/"  or "" 
+	path = path and path   or "" 
 	local tab=metatable({path=path })
 
 	for k,v in pairs(data_table) do 
 		-- clone data_table
-		tab[k]= get_data(config, path ..  v.name , v.type,v.list ) 
+		tab[k]= get_data(config, path .. "/" ..  v.sub_path , v.type,v.list ) 
 	end 
 	return tab 
 end 
@@ -110,7 +110,7 @@ return {
   set_list(config,"engine/translators",{"lua_translator","table_translator"} ,"string")
 
 
- load_user_data(config, user_data_table)  
+ load_user_data(config, path , user_data_table)  
 
  {
 
