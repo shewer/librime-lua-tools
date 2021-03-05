@@ -17,7 +17,7 @@ local function status(ctx)
     stat.composing= ctx:is_composing()
     stat.empty= not stat.composing
     stat.has_menu= ctx:has_menu()
-    stat.paging= not comp.empty() and comp:back():has_tag("paging")
+    stat.paging= not comp:empty() and comp:back():has_tag("paging")
     return stat
 end
 local function lua_init(...)
