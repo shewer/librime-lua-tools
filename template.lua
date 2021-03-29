@@ -75,7 +75,7 @@ local function lua_init(...)
 	end 
 
 	--- filter  
-	local function filter_func(input,seg,env)   -- pass filter 
+	local function filter_func(input,env)   -- pass filter 
 		for cand in input:iter() do 
 			yield(cand)
 		end 
