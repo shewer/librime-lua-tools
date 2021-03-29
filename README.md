@@ -1,5 +1,13 @@
 # librime-lua-tools
+## wordninja.lua -- wordninja_word  
+```lua
+wordninja=require("wordninja")
+wordninja.init('wordninja_words.txt')
+wordninja.test()
+wordninja.test('Ilovelua')
+wordninja.split("Ilovelua')  -- return table    :concat(" ")
 
+```
 ## object.lua -- class tools
 class method    Word.Parse()
 obj method      Word:info()
