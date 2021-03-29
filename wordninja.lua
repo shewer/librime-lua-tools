@@ -30,7 +30,7 @@ local function dictload(filename)
 	fn:close()
 	local dict={}
 	local max_len=0
-	print("table size:",#tab)
+	-- print("table size:",#tab)
 	for i,w in next , tab do 
 		dict[w] = math.log( i * math.log(#tab) ) 
 		max_len =  ( max_len < w:len() and w:len() ) or max_len
@@ -47,7 +47,7 @@ local function substr(str,i,tp)   -- str,i  return   h str , t str   str,i,true 
 	return tp and #(str:sub(0,i)) or str:sub(0,i)  , str:sub(i+1)
 end 
 
-local function split(str)
+local function _split(str)
 	--- init cost list
 	local cost={}
 	cost[0]={c=0,k=0}
@@ -77,21 +77,46 @@ local function split(str)
 	end 
 
     local function rever_word( s,tab )
-	   local  h,t = substr(s,cost[#s].k ) 
+	   local  h,t = substr(s,cost[#s].k)
 	   if #s <=0 then return tab end 
-	   table.insert(tab,1, t )
+	   --print(s,#s ,cost[#s].k,"===" ,h.." | "..t ,"===" ,table.concat(tab ," ") ) 
+	   if t=="'s" then 
+		   cost[#s].k= cost[#s-2].k  -- cost[#s].k  move to next k 
+		   return rever_word(s,tab) 
+	   end 
+	   if t:match("^[%d]+$")  then 
+		   local h1,t1=substr(h,cost[#h].k)
+		   if t1:match("^%d$") then 
+			   cost[#s].k = cost[#s].k -1 --  cost[#s].k -1
+			   --print("---callback ",s,#s ,cost[#s].k,"===" ,h.." | "..t ,"===" ,table.concat(tab ," ") ) 
+			   return rever_word(s,tab) 
+		   end 
+	   end 
+	   table.insert(tab,1, t ) -- unshift t 
 	   return rever_word(h, tab) 
     end
 	-----   start ------
+
     local ss=str:lower()
 	for i=1,#ss do 
 		cost[i] = best_match( ss:sub(1,i) ,i, 9e999, i) 
 	end 
+	return rever_word(str,{} )
+end 
 
-	return rever_word(str,  setmetatable({},{__index=table})      )
+function split(s) 
+	local tab= setmetatable({},{__index=table})
+	for w in  s:gmatch("[%a%d']+") do   --    "abe,.p,.poeu-,a" -> {abe p poeu a} 
+		print("---------  " .. w .. "  --------")
+		for i,ww in next , _split(w) do
+			table.insert(tab,ww)
+		end
+	end 
+	return tab
 end 
 
 local ss="WethepeopleoftheunitedstatesinordertoformamoreperfectunionestablishjusticeinsuredomestictranquilityprovideforthecommondefencepromotethegeneralwelfareandsecuretheblessingsoflibertytoourselvesandourposteritydoordainandestablishthisconstitutionfortheunitedstatesofAmerica"
+
 local function _test(func,...)
 	local t1=os.clock()
 	local res = func(...)
@@ -100,19 +125,18 @@ local function _test(func,...)
 end 
 local function test(s)
 	s= s or ss
-	print( 
-		table.concat( _test(split ,s), " "  ) 
-		)
+	print( table.concat( _test(split ,s), " "  ) )
 end 
 
 local function init(filename)
 	tab.dict,tab.maxlen= dictload( filename) 
-	tab.split=split
-	tab.tc=_test
-	tab.test=test
-	tab.ts=ss
 end 
 
 tab.init=init
+tab.split=split
+tab.tc=_test
+tab.test=test
+tab.ts=ss
+
 return tab 
 
