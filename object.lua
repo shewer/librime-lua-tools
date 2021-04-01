@@ -95,7 +95,7 @@ function Object:superclass()
 end
 function Object:is_a(class)
 	-- print(self,type(self))
-	print(" is_a test :" , self, class) 
+	--print(" is_a test :" , self, class) 
 	if  not class then return false end  -- class == nil  return false
 	local class_str=  ( type(class) == "string" and class ) or type(class) -- set class to class name
 	if  self:name() == class_str   then 
