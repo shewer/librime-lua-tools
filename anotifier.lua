@@ -53,9 +53,7 @@ function Notifier:append(func)
   self._list:insert(func)
 end
 function Notifier:remove(func)
-  local _,index=self._list:find(func)
-  self._list:remove(index)
-  return  index and self._list:remove(index)
+  return  self._list:delete(func) --index and self._list:remove(index)
 end
 function Notifier:funcs()
   return self._list
@@ -92,19 +90,19 @@ function Notifiers:setup(ctx)
   end
 end
 function Notifiers:reset()
-  for k,v in pairs(notifier_func) do
+  for k,v in pairs(notifier_name) do
     self[k]:reset()
     self[k]=nil
   end
 end
 
 function Notifiers:connect()
-  for k,v in pairs(notifier_func) do
+  for k,v in pairs(notifier_name) do
     self[k]:connect()
   end
 end
 function Notifiers:disconnect()
-  for k,v in pairs(notifier_func) do
+  for k,v in pairs(notifier_name) do
     self[k]:disconnect()
   end
 end
