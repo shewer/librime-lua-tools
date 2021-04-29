@@ -49,16 +49,22 @@ table.find_index=function(tab,elm, ...)
 	local _ ,i =table.find(tab,elm,...)
 	return i
 end 
-
-table.find=function(tab,elm,...)
-	local _func=  (type(elm) == "function" and elm ) or  function(v, ... ) return  v == elm  end 
-	for k,v in pairs(tab) do 
-		if  _func(v,...)  then 
-			return v,k
-		end 
-	end 
-	return nil
+table.find=function(tab,elm,func)
+  for i,v in ipairs(tab) do
+    if elm == v then 
+      return v,i
+    end 
+  end 
 end 
+
+table.find_with_func=function(tab,elm,...)
+  local i,v = table.find(tab,elm) 
+end 
+table.delete= function(tab,elm, ...)
+  local index=table.find_index(tab,elm)
+  return  index and table.remove(tab,index) 
+end 
+
 table.find_all=function(tab,elm,...)
 	local tmptab=setmetatable({} , {__index=table} )
 	local _func=  (type(elm) == "function" and elm ) or  function(v,k, ... ) return  v == elm  end 
