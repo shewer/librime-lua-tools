@@ -1,4 +1,5 @@
-# librime-lua-tools
+# ~~ibrime-lua-tools~~ 己轉移至   (https://github.com/shewer/librime-lua-script) tools/
+
 ## anotifier.lua -- 
 ## wordninja.lua -- wordninja_word
 ```lua
